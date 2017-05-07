@@ -3,7 +3,7 @@
 import json
 
 """ Business yelp dataset file """
-SOURCE = 'D:\\YELP Dataset\\yelp_academic_dataset_business.json';
+SOURCE = 'yelp_academic_dataset_business.json';
 
 def findNWriteListToTxt(catg):
     """
@@ -11,7 +11,7 @@ def findNWriteListToTxt(catg):
     Checks for "categories" column under business dataset and writes only the business id's
     based on user entered category 'catg', into a text file.
     """
-    txt_file = open("D:\\YELP Dataset\\tobesubmitted\\restaurantID.txt", "w")
+    txt_file = open("restaurantID.txt", "w")
     id_list = []
     with open(SOURCE, encoding='utf-8', errors = 'replace') as f:
         for line in f:
