@@ -1,4 +1,3 @@
-# dsouza{c, d, m}@indiana.edu
 # Tokenizes review texts based on 'Adjective' POS only to provide as an input to wordcloud generator.
 import json
 import csv
@@ -6,10 +5,10 @@ import re
 from nltk import word_tokenize, pos_tag
 
 """ The input .json file for review texts """
-SOURCE = "D:\\YELP Dataset\\yelp_academic_dataset_review.json"
+SOURCE = "D:\\yelp_academic_dataset_review_restaurants.json"
 
 """ The output wordcloud csv file for yelp star ratings = 1 """
-OUTPUT = "D:\\YELP Dataset\\tobesubmitted\\wordcloud datasets\\Yelp_1star_wc_sample_adj.csv"
+OUTPUT = "D:\\Yelp_1star_wc_sample_adj.csv"
 
 def normalize_text(text):
     # Remove non-ASCII chars.
@@ -22,9 +21,6 @@ def generateCSV(count = None):
     """
     if(count != None):
         c = 0;
-        
-    with open("D:\\YELP Dataset\\tobesubmitted\\restaurantID.txt", 'r') as busIds:
-        id_list = busIds.read();
     
     part_of_speech = ['JJ'] # Part of Speech = Adjective
     
@@ -35,7 +31,7 @@ def generateCSV(count = None):
             for line in f:
                 data = json.loads(line) 
                 """ star filter for restaurant """
-                if(data['stars'] == 1 and (data['business_id'] in id_list)):
+                if(data['stars'] == 1):
                     data['text'] = ''.join([normalize_text(text) for text in data['text']])  
                     word_list = word_tokenize(data['text'])
                     pos_tag_list = [x[0] for x in pos_tag(word_list) if x[1] in part_of_speech]
