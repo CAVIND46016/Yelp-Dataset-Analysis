@@ -18,7 +18,7 @@ def generateWordCloud(text):
     plt.show()
 
 def main():
-    dataset = open("D:\\YELP Dataset\\tobesubmitted\\wordcloud datasets\\Yelp_1star_wc_sample_adj.csv", 'r').read();
+    dataset = open("D:\\Yelp_1star_wc_sample_adj.csv", 'r').read();
     generateWordCloud(dataset);
     
 if(__name__ == "__main__"):
