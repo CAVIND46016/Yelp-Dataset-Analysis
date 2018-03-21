@@ -4,57 +4,62 @@ Converts .json file to .csv file
 import json
 import csv
 import re
-from yelp_fieldlists import getHeaders, getData
+from yelp_fieldlists import get_headers, get_data
 
-BUSINESS    = "business"
-REVIEW      = "review"
-TIP         = "tip"
-CHECKIN     = "checkin"
-USER        = "user"
+BUSINESS = "business"
+REVIEW = "review"
+TIP = "tip"
+CHECKIN = "checkin"
+USER = "user"
 
-typelists   = [BUSINESS, REVIEW, TIP, CHECKIN, USER]
+TYPE_LISTS = [BUSINESS, REVIEW, TIP, CHECKIN, USER]
 
-"""Remove non-ASCII chars."""
 def normalize_text(text):
+    """
+    Remove non-ASCII chars.
+    """
     text = re.sub('[^\x00-\x7F]+', ' ', text)
     return text
 
-def json_to_csv(json_file, csv_file, fileType, count = None):
+def json_to_csv(json_file, csv_file, file_type, count=None):
     """
     json_file ==> .json file to be converted
     csv_file ==> output csv file
     fileType ==> 'business' or 'review' or 'tip'
     count ==> Number of records to be created, ignore if entire .json file needs to be scanned
     """
-    
-    if(fileType not in typelists):
-        raise ValueError('Type {} not defined.'.format(fileType));
+    if file_type not in TYPE_LISTS:
+        raise ValueError('Type {} not defined.'.format(file_type))
 
-    if(count != None):
-        c = 0    
-    with open(csv_file, 'w', encoding = 'utf-8', errors = 'replace') as file:
-        w = csv.writer(file, lineterminator='\n')
-        w.writerow(getHeaders(fileType));      
-        with open(json_file, encoding = 'utf-8', errors = 'replace') as f:
-            for line in f:
+    if count is not None:
+        curr = 0    
+        
+    with open(csv_file, 'w', encoding='utf-8', errors='replace') as file:
+        csv_writer = csv.writer(file, lineterminator='\n')
+        csv_writer.writerow(get_headers(file_type))
+        with open(json_file, encoding='utf-8', errors='replace') as json_file:
+            for line in json_file:
                 data = json.loads(line)     
-                if(fileType == REVIEW or fileType == TIP):  
+                if file_type == REVIEW or file_type == TIP:  
                     data['text'] = ''.join([normalize_text(text) for text in data['text']])
-                w.writerow(getData(fileType, data));
-                if(count != None):
-                    c = c + 1
-                    if(c == count):
-                        break;
+                csv_writer.writerow(get_data(file_type, data))
+                if count is not None:
+                    curr += 1
+                    if curr == count:
+                        break
                     
     print("File {} created successfully.".format(csv_file))
 
 def main():
-    type = USER
+    """
+    Entry-point for the function.
+    """
+    _type = USER
+    json_file = "D:\\New folder\\yelp_academic_dataset_{}_restaurants.json".format(_type)
+    csv_file = '{0}.csv'.format(json_file.split('.json')[0])
     
-    json_file = "D:\\New folder\\yelp_academic_dataset_{}_restaurants.json".format(type)
-    csv_file = '{0}.csv'.format(json_file.split('.json')[0]);
+    json_to_csv(json_file, csv_file, _type)
     
-    json_to_csv(json_file, csv_file, type)
+if __name__ == "__main__":
+    main()
     
-if(__name__ == "__main__"):
-    main();
