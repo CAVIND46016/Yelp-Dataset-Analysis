@@ -37,8 +37,8 @@ def json_to_csv(json_file, csv_file, file_type, count=None):
     with open(csv_file, 'w', encoding='utf-8', errors='replace') as file:
         csv_writer = csv.writer(file, lineterminator='\n')
         csv_writer.writerow(get_headers(file_type))
-        with open(json_file, encoding='utf-8', errors='replace') as json_file:
-            for line in json_file:
+        with open(json_file, encoding='utf-8', errors='replace') as j_file:
+            for line in j_file:
                 data = json.loads(line)     
                 if file_type == REVIEW or file_type == TIP:  
                     data['text'] = ''.join([normalize_text(text) for text in data['text']])
