@@ -1,5 +1,5 @@
 """
-Retrieve a list of business id's
+Retrieve a list of user id's
 """
 import json
 
